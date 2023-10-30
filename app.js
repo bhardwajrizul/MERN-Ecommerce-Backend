@@ -1,6 +1,9 @@
 const express = require('express');
 const productRouter = require('./routes/productRoutes')
+const userRouter = require('./routes/userRouter')
 const globalErrorHandler = require('./controllers/errorController')
+require('./initFirebase').initFirebase();
+
 const app = express();
 
 // CORS Middleware
@@ -30,6 +33,8 @@ app.get('/', (req, res) => {
     res.end('API Running...');
 });
 app.use('/api/products', productRouter)
+app.use('/api/users', userRouter)
+
 
 
 // Generic Error Handler 
