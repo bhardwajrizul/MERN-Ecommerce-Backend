@@ -9,6 +9,7 @@ exports.getProducts = catchAsyncError(async (req, res, next) => {
 
     // Apply filters to the base query
     const modifyMongooseQuery = new APIFeatures(baseQuery, req.query);
+    // modifyMongooseQuery.populate('rating').populate('ratingCount')
     modifyMongooseQuery.filter();
     const filteredProductsQuery = modifyMongooseQuery.query;
 
@@ -32,6 +33,24 @@ exports.getProducts = catchAsyncError(async (req, res, next) => {
         currentPage: page,
         totalPages: Math.ceil(totalProducts / limit),
         totalProducts: totalProducts
+    });
+});
+
+
+exports.getProductInfo = catchAsyncError(async (req, res, next) => {
+    const pid = req.params.pid;
+    const product = await Product.findOne({ _id: pid });
+
+    if (!product) {
+        return res.status(404).json({
+            status: response.error,
+            message: 'Product not found',
+        });
+    }
+
+    res.status(200).json({
+        status: response.success,
+        data: product,
     });
 });
 
