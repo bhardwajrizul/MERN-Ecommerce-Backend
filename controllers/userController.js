@@ -10,9 +10,18 @@ const Order = require('../models/orderModel');
 exports.addUser = catchAsyncError(async (req, res, next) => {
   const { uid, email, name } = req.body;
 
+  let userCount = await User.countDocuments();
+  if (userCount >= 50) {
+    return res.status(403).json({
+      success: false,
+      message: 'No new accounts allowed.'
+    });
+  }
+
   let existingUser = await User.findOne({
     $or: [{ email }, { firebaseUID: uid }]
   });
+
 
   if (existingUser) {
     return res.status(400).json({

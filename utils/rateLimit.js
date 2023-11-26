@@ -19,7 +19,9 @@ function rateLimit(maxTokens, refillTime) {
         const tokenCount = tokens.get(ip);
         // console.log(tokenCount)
         if (tokenCount === 0) {
-            res.status(429).send(`http://localhost:5173/too-many-requests?refillTime=${refillTime}`)
+            res.status(429).send(`https://mern-e-commerce-theta.vercel.app/too-many-requests?refillTime=${refillTime}`)  // PROD
+            // res.status(429).send(`http://localhost:5173/too-many-requests?refillTime=${refillTime}`)  // DEV
+
             return;
         }
 
